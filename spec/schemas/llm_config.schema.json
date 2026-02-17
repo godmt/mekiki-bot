@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LLMConfig",
+  "type": "object",
+  "required": [
+    "activeProvider",
+    "activeModel",
+    "providers",
+    "defaults"
+  ],
+  "properties": {
+    "activeProvider": {
+      "type": "string"
+    },
+    "activeModel": {
+      "type": "string"
+    },
+    "providers": {
+      "type": "object"
+    },
+    "defaults": {
+      "type": "object",
+      "properties": {
+        "temperature": {
+          "type": "number"
+        },
+        "maxOutputTokens": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "temperature",
+        "maxOutputTokens"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

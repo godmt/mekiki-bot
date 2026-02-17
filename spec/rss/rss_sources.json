@@ -1,0 +1,40 @@
+{
+  "sources": [
+    {
+      "id": "4gamer",
+      "title": "4Gamer.net",
+      "feed_url": "https://www.4gamer.net/rss/index.xml",
+      "enabled": true,
+      "default_signals": ["#ニュース", "#実務直結"],
+      "grace_hours": 6,
+      "max_catchup_days": 14
+    },
+    {
+      "id": "panora",
+      "title": "PANORA",
+      "feed_url": "https://panora.tokyo/feed",
+      "enabled": true,
+      "default_signals": ["#ニュース", "#LLM"],
+      "grace_hours": 6,
+      "max_catchup_days": 14
+    },
+    {
+      "id": "itmedia_all",
+      "title": "ITmedia (All)",
+      "feed_url": "https://rss.itmedia.co.jp/rss/2.0/itmedia_all.xml",
+      "enabled": true,
+      "default_signals": ["#ニュース", "#DevTools"],
+      "grace_hours": 6,
+      "max_catchup_days": 14
+    },
+    {
+      "id": "yahoo_anmanmv",
+      "title": "Yahoo!ニュース (anmanmv)",
+      "feed_url": "https://news.yahoo.co.jp/rss/media/anmanmv/all.xml",
+      "enabled": true,
+      "default_signals": ["#ニュース"],
+      "grace_hours": 6,
+      "max_catchup_days": 14
+    }
+  ]
+}

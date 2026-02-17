@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "StateMachine",
+  "type": "object",
+  "required": [
+    "states",
+    "transitions",
+    "library_policy",
+    "history"
+  ],
+  "properties": {
+    "states": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "transitions": {
+      "type": "array"
+    },
+    "library_policy": {
+      "type": "object"
+    },
+    "history": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UXComponents",
+  "type": "object",
+  "properties": {
+    "feed_actions": {
+      "type": "object"
+    },
+    "modals": {
+      "type": "object"
+    },
+    "reason_menu": {
+      "type": "object"
+    },
+    "duel": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "feed_actions",
+    "modals"
+  ],
+  "additionalProperties": true
+}

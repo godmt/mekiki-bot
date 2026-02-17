@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LearningConfig",
+  "type": "object",
+  "properties": {
+    "time_decay": {
+      "type": "object",
+      "properties": {
+        "half_life_days": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "half_life_days"
+      ]
+    },
+    "fatigue": {
+      "type": "object",
+      "properties": {
+        "window_days": {
+          "type": "number"
+        },
+        "discard_streak_threshold": {
+          "type": "integer"
+        },
+        "penalty_multiplier": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "window_days",
+        "discard_streak_threshold",
+        "penalty_multiplier"
+      ]
+    }
+  },
+  "required": [
+    "time_decay",
+    "fatigue"
+  ],
+  "additionalProperties": true
+}

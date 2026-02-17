@@ -1,0 +1,14 @@
+{
+  "summarize_feed": {
+    "provider": "openai",
+    "model": "gpt-4o-mini"
+  },
+  "extract_signals": {
+    "provider": "google",
+    "model": "gemini-2.5-flash"
+  },
+  "library_writeup": {
+    "provider": "anthropic",
+    "model": "claude-3-5-haiku-latest"
+  }
+}

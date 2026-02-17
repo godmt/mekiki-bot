@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TaskRouting",
+  "type": "object",
+  "additionalProperties": {
+    "type": "object",
+    "required": [
+      "provider",
+      "model"
+    ],
+    "properties": {
+      "provider": {
+        "type": "string"
+      },
+      "model": {
+        "type": "string"
+      }
+    }
+  }
+}

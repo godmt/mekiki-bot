@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LibraryPostTemplateContext",
+  "type": "object",
+  "required": [
+    "one_liner",
+    "summary_1",
+    "summary_2",
+    "summary_3",
+    "why_1",
+    "why_2",
+    "why_3",
+    "excerpts_md",
+    "source_domain",
+    "source_type",
+    "published_at",
+    "collected_at",
+    "signals_inline",
+    "evidence_id",
+    "canonical_url",
+    "feed_message_url",
+    "actions_history_md",
+    "notes_md"
+  ],
+  "properties": {
+    "one_liner": {
+      "type": "string"
+    },
+    "summary_1": {
+      "type": "string"
+    },
+    "summary_2": {
+      "type": "string"
+    },
+    "summary_3": {
+      "type": "string"
+    },
+    "why_1": {
+      "type": "string"
+    },
+    "why_2": {
+      "type": "string"
+    },
+    "why_3": {
+      "type": "string"
+    },
+    "excerpts_md": {
+      "type": "string"
+    },
+    "source_domain": {
+      "type": "string"
+    },
+    "source_type": {
+      "type": "string"
+    },
+    "published_at": {
+      "type": "string"
+    },
+    "collected_at": {
+      "type": "string"
+    },
+    "signals_inline": {
+      "type": "string"
+    },
+    "evidence_id": {
+      "type": "string"
+    },
+    "canonical_url": {
+      "type": "string"
+    },
+    "feed_message_url": {
+      "type": "string"
+    },
+    "actions_history_md": {
+      "type": "string"
+    },
+    "notes_md": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

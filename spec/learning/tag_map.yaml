@@ -1,0 +1,16 @@
+# Map from Signals (hashtags) -> Forum tag keys.
+# The bot should attach these tags when creating/updating a Library Forum post.
+
+map:
+  "#ニュース": ["NEWS"]
+  "#リリース": ["RELEASE"]
+  "#Cloudflare": ["CF"]
+  "#LLM": ["LLM"]
+  "#DevTools": ["DEVTOOLS"]
+  "#運用観点": ["OPS"]
+  "#法律": ["LAW"]
+  "#画像生成AI": ["IMAGE_GEN"]
+
+defaults:
+  unsure_tag_key: "UNSURE"
+  discard_tag_key: "DISCARD"

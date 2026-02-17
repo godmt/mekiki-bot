@@ -1,0 +1,21 @@
+tags:
+  - key: NEWS
+    label: "ニュース"
+  - key: RELEASE
+    label: "リリース情報"
+  - key: LLM
+    label: "LLM"
+  - key: IMAGE_GEN
+    label: "画像生成AI"
+  - key: LAW
+    label: "AI規制・法律"
+  - key: DEVTOOLS
+    label: "Tips/テクニック"
+  - key: CF
+    label: "Cloudflare"
+  - key: OPS
+    label: "運用"
+  - key: UNSURE
+    label: "Unsure（塩漬け）"
+  - key: DISCARD
+    label: "Discard"

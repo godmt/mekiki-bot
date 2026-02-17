@@ -1,0 +1,17 @@
+# Signals vocabulary (short hashtags).
+# Keep it small at first; expand after you observe behavior.
+
+signals:
+  - "#一次情報"
+  - "#実務直結"
+  - "#新規性"
+  - "#密度高"
+  - "#コスト観点"
+  - "#運用観点"
+  - "#Cloudflare"
+  - "#LLM"
+  - "#DevTools"
+  - "#画像生成AI"
+  - "#法律"
+  - "#ニュース"
+  - "#リリース"

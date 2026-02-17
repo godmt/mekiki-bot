@@ -1,0 +1,26 @@
+{
+  "activeProvider": "openai",
+  "activeModel": "gpt-4o-mini",
+  "providers": {
+    "openai": {
+      "type": "openai",
+      "apiKeyEnv": "OPENAI_API_KEY"
+    },
+    "anthropic": {
+      "type": "anthropic",
+      "apiKeyEnv": "ANTHROPIC_API_KEY"
+    },
+    "google": {
+      "type": "google",
+      "apiKeyEnv": "GOOGLE_API_KEY"
+    },
+    "ollama": {
+      "type": "ollama",
+      "baseURL": "http://localhost:11434/api"
+    }
+  },
+  "defaults": {
+    "temperature": 0.2,
+    "maxOutputTokens": 450
+  }
+}

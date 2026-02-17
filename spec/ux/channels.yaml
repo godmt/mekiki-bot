@@ -1,0 +1,33 @@
+# Channel wiring & runtime knobs.
+# Note: IDs are strings; leave empty until you set them in your Discord server.
+
+channels:
+  inbox_manual:
+    name: "inbox-manual"
+    id: "1473429733378097244"
+  feed_ai:
+    name: "feed-ai"
+    id: "1473428774816186409"
+  library_forum:
+    name: "library"
+    id: "1473428844730913001"
+  ops:
+    name: "ops-bot"
+    id: "1473434339931852881"
+
+runtime:
+  # restart-safe cursor behavior
+  grace_hours_default: 6
+  max_catchup_days_default: 14
+  # If true, bot posts nothing until /sync is called.
+  manual_sync_only: true
+
+posting:
+  # keep #feed-ai fast: prefer short cards
+  feed_card_max_signals: 8
+
+library:
+  # Create Forum posts only for Keep/Unsure
+  archive_on_keep: true
+  archive_on_unsure: true
+  archive_on_discard: false

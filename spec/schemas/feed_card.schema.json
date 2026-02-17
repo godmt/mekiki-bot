@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FeedCardTemplateContext",
+  "type": "object",
+  "required": [
+    "title",
+    "one_liner",
+    "signals",
+    "source_domain",
+    "source_type",
+    "published_at",
+    "evidence_id",
+    "canonical_url",
+    "signals_inline"
+  ],
+  "properties": {
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "one_liner": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240
+    },
+    "signals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 12
+    },
+    "signals_inline": {
+      "type": "string"
+    },
+    "source_domain": {
+      "type": "string"
+    },
+    "source_type": {
+      "type": "string",
+      "enum": [
+        "url",
+        "pdf",
+        "text",
+        "snippet",
+        "bot_fetch"
+      ]
+    },
+    "published_at": {
+      "type": "string"
+    },
+    "evidence_id": {
+      "type": "string"
+    },
+    "canonical_url": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

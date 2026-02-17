@@ -1,0 +1,28 @@
+# State machine for labels and archive policy.
+
+states: [NEW, KEEP, UNSURE, DISCARD]
+
+transitions:
+  - from: "*"
+    on: "label.keep"
+    to: "KEEP"
+  - from: "*"
+    on: "label.unsure"
+    to: "UNSURE"
+  - from: "*"
+    on: "label.discard"
+    to: "DISCARD"
+
+# Archive behavior for #library Forum
+library_policy:
+  on_keep: "upsert"      # create or update
+  on_unsure: "upsert"
+  on_discard:
+    mode: "mark_only"    # do not delete; just mark if exists
+    mark:
+      prefix_title: "[DISCARD]"
+      tag_key: "DISCARD"
+
+history:
+  # Always append action history in DB. Library post may include a rendered summary.
+  persist_all_events: true

@@ -1,0 +1,75 @@
+# UI components (Discord message components) config.
+# custom_id format uses {evidence_id} substitution at render time.
+
+feed_actions:
+  buttons:
+    - key: KEEP
+      label: "Keep"
+      emoji: "✅"
+      action: "label.keep"
+      custom_id: "mk:label:keep:{evidence_id}"
+    - key: UNSURE
+      label: "Unsure"
+      emoji: "🤔"
+      action: "label.unsure"
+      custom_id: "mk:label:unsure:{evidence_id}"
+    - key: DISCARD
+      label: "Discard"
+      emoji: "🗑"
+      action: "label.discard"
+      custom_id: "mk:label:discard:{evidence_id}"
+    - key: OPEN
+      label: "Open"
+      emoji: "🧾"
+      action: "open"
+      custom_id: "mk:open:{evidence_id}"
+    - key: NOTE
+      label: "Note"
+      emoji: "📝"
+      action: "note.open_modal"
+      custom_id: "mk:note:{evidence_id}"
+
+modals:
+  note:
+    custom_id: "mk:note_modal:{evidence_id}"
+    title: "メモ追加"
+    fields:
+      - key: note_title
+        label: "見出し（任意）"
+        required: false
+        max_length: 80
+      - key: note_body
+        label: "メモ（必須）"
+        required: true
+        max_length: 800
+
+reason_menu:
+  # Keep後にたまにだけ表示する（疲れないため）
+  enabled: true
+  trigger:
+    mode: "rate_limit_and_probability"
+    once_per_hours: 24
+    probability: 0.10
+  max_select: 2
+  allow_skip: true
+  custom_id: "mk:reason:{evidence_id}"
+  options:
+    - "一次情報"
+    - "実装が具体"
+    - "新規性"
+    - "密度が高い"
+    - "今すぐ効く"
+    - "長期の種"
+    - "コスト観点"
+    - "運用観点"
+
+duel:
+  enabled: true
+  mode: "manual_only"
+  choices: ["A", "B", "BOTH", "NEITHER", "SKIP"]
+  custom_ids:
+    A: "mk:duel:a:{duel_id}"
+    B: "mk:duel:b:{duel_id}"
+    BOTH: "mk:duel:both:{duel_id}"
+    NEITHER: "mk:duel:neither:{duel_id}"
+    SKIP: "mk:duel:skip:{duel_id}"

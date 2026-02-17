@@ -1,0 +1,18 @@
+# Time-aware preference learning knobs.
+
+time_decay:
+  # Half-life (days): older signals become weaker.
+  half_life_days: 21
+
+fatigue:
+  # If the user repeatedly discards items with similar signals in this window,
+  # apply a penalty: likely interest has faded (concept drift).
+  window_days: 14
+  discard_streak_threshold: 3
+  penalty_multiplier: 0.80
+
+scoring:
+  # Base weights (rule-based MVP). Later can be replaced by a model.
+  keep_weight: 1.0
+  unsure_weight: 0.2
+  discard_weight: -1.0
