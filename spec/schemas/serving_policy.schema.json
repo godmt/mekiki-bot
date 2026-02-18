@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ServingPolicy",
+  "type": "object",
+  "required": ["version", "enabled", "posting", "candidates", "filters", "preselect"],
+  "properties": {
+    "version": { "type": "string" },
+    "enabled": { "type": "boolean" },
+    "posting": { "type": "object" },
+    "candidates": { "type": "object" },
+    "filters": { "type": "object" },
+    "preselect": { "type": "object" },
+    "llm_judge": { "type": "object" },
+    "portfolio": { "type": "object" },
+    "diversity": { "type": "object" },
+    "exploration": { "type": "object" },
+    "logging": { "type": "object" }
+  },
+  "additionalProperties": true
+}

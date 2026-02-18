@@ -12,11 +12,13 @@ import { ingestInput } from "./discord/ingestHandler.js";
 import { ensureForumTags } from "./discord/ensureTags.js";
 import { runSync } from "./discord/syncHandler.js";
 import { updateRegistryWithOllama } from "./llm/ollamaProbe.js";
+import { startScheduler, stopScheduler, runOnce } from "./scheduler.js";
 import type { BotContext } from "./discord/botContext.js";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const LOCK_FILE = resolve(ROOT, "data", "mekiki.lock");
 const TEST_SYNC = process.argv.includes("--test-sync");
+const RUN_ONCE = process.argv.includes("--once");
 
 // ---------- Lock file guard ----------
 
@@ -69,9 +71,9 @@ async function main() {
   acquireLock();
 
   // Clean up lock on exit
-  process.on("exit", releaseLock);
-  process.on("SIGINT", () => { releaseLock(); process.exit(0); });
-  process.on("SIGTERM", () => { releaseLock(); process.exit(0); });
+  process.on("exit", () => { stopScheduler(); releaseLock(); });
+  process.on("SIGINT", () => { stopScheduler(); releaseLock(); process.exit(0); });
+  process.on("SIGTERM", () => { stopScheduler(); releaseLock(); process.exit(0); });
 
   const spec = loadAndValidateSpec();
   console.log("[mekiki-bot] Spec loaded and validated.");
@@ -126,6 +128,35 @@ async function main() {
       `manual_sync_only: ${(spec.runtime as { manual_sync_only: boolean }).manual_sync_only}`,
     );
 
+    // Graceful shutdown helper
+    const gracefulExit = (label: string, delayMs = 3000) => {
+      setTimeout(() => {
+        console.log(`[${label}] Exiting.`);
+        stopScheduler();
+        client.destroy();
+        db.close();
+        process.exit(0);
+      }, delayMs);
+    };
+
+    // --once: run sync → learn → expire, then exit (for external schedulers)
+    if (RUN_ONCE) {
+      console.log("[once] Run-once mode activated.");
+      try {
+        await runOnce(ctx);
+      } catch (err) {
+        console.error("[once] Error:", err);
+        await channels.ops.send(
+          `❌ run-once エラー: ${err instanceof Error ? err.message : String(err)}`,
+        );
+      }
+      gracefulExit("once");
+      return;
+    }
+
+    // Start scheduler (respects manual_sync_only and profile_update.yaml mode)
+    startScheduler(ctx);
+
     // --test-sync: auto-run sync for testing, then exit
     if (TEST_SYNC) {
       console.log("[test] Running test sync...");
@@ -140,13 +171,7 @@ async function main() {
           `🧪 テスト同期エラー: ${err instanceof Error ? err.message : String(err)}`,
         );
       }
-      // Keep running for a bit to let messages send, then exit
-      setTimeout(() => {
-        console.log("[test] Exiting.");
-        client.destroy();
-        db.close();
-        process.exit(0);
-      }, 5000);
+      gracefulExit("test", 5000);
     }
   });
 

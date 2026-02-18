@@ -79,6 +79,8 @@ export interface MekikiSpec {
   tasteProfileSeed: string;
   profileUpdatePrompt: string;
   profileUpdateConfig: Record<string, unknown>;
+  servingPolicy: Record<string, unknown>;
+  servingPrompt: string;
 }
 
 export function loadAndValidateSpec(): MekikiSpec {
@@ -106,6 +108,10 @@ export function loadAndValidateSpec(): MekikiSpec {
   const profileUpdatePrompt = readTemplate(specPath("learning", "profile_update_prompt.md"));
   const profileUpdateConfig = readYaml(specPath("learning", "profile_update.yaml")) as Record<string, unknown>;
 
+  // --- Serving Policy ---
+  const servingPolicy = readYaml(specPath("serving", "serving_policy.yaml")) as Record<string, unknown>;
+  const servingPrompt = readTemplate(specPath("serving", "serving_prompt.md"));
+
   // --- Validate against schemas ---
   validate(ajv, specPath("schemas", "rss_sources.schema.json"), rssSources, "rss_sources.json");
   validate(ajv, specPath("schemas", "llm_config.schema.json"), llmConfig, "llm_config.json");
@@ -114,8 +120,9 @@ export function loadAndValidateSpec(): MekikiSpec {
   validate(ajv, specPath("schemas", "learning.schema.json"), learningConfig, "learning_config.yaml");
   validate(ajv, specPath("schemas", "ux_components.schema.json"), components, "components.yaml");
   validate(ajv, specPath("schemas", "state_machine.schema.json"), stateMachine, "state_machine.yaml");
+  validate(ajv, specPath("schemas", "serving_policy.schema.json"), servingPolicy, "serving_policy.yaml");
 
-  console.log("[spec] All 7 schema validations passed.");
+  console.log("[spec] All 8 schema validations passed.");
 
   // Extract channel config
   const channels = (channelsYaml as { channels: Record<string, unknown> }).channels;
@@ -142,5 +149,7 @@ export function loadAndValidateSpec(): MekikiSpec {
     tasteProfileSeed,
     profileUpdatePrompt,
     profileUpdateConfig,
+    servingPolicy,
+    servingPrompt,
   };
 }

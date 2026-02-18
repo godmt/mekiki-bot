@@ -14,5 +14,8 @@
   "taste_profile_propose": { 
     "provider": "openai", 
     "model": "gpt-4o-mini" 
+  }, "serve_judge": {
+    "provider": "openai",
+    "model": "gpt-4o-mini" 
   }
 }

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ServeJudgement",
+  "type": "object",
+  "required": ["post_score", "bucket", "reason"],
+  "properties": {
+    "post_score": { "type": "number", "minimum": 0, "maximum": 1 },
+    "bucket": {
+      "type": "string",
+      "enum": [
+        "DEVTOOLS",
+        "AI_LLM",
+        "XR_VTUBER",
+        "GAME_INDUSTRY",
+        "ECON_POLICY",
+        "GENERAL_NEWS",
+        "SERENDIPITY",
+        "OTHER"
+      ]
+    },
+    "reason": { "type": "string", "maxLength": 240 },
+    "signals": {
+      "type": "array",
+      "items": { "type": "string" },
+      "maxItems": 16
+    },
+    "novelty": { "type": "number", "minimum": 0, "maximum": 1 },
+    "actionability": { "type": "number", "minimum": 0, "maximum": 1 },
+    "trust": { "type": "number", "minimum": 0, "maximum": 1 },
+    "time_sensitivity": { "type": "number", "minimum": 0, "maximum": 1 },
+    "avoid_repeats": { "type": "boolean" },
+    "notes": { "type": "string", "maxLength": 400 }
+  },
+  "additionalProperties": false
+}

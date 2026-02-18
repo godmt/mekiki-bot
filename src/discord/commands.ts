@@ -179,11 +179,19 @@ async function handleSync(
   await ctx.channels.ops.send("🔄 Sync started...");
   try {
     const count = await runSync(ctx);
-    await interaction.editReply(`Sync complete: ${count} new items posted.`);
+    try {
+      await interaction.editReply(`Sync complete: ${count} new items posted.`);
+    } catch {
+      console.warn("[sync] Could not editReply (interaction may have expired)");
+    }
     await ctx.channels.ops.send(`✅ Sync complete: ${count} new items posted.`);
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
-    await interaction.editReply(`Sync failed: ${msg}`);
+    try {
+      await interaction.editReply(`Sync failed: ${msg}`);
+    } catch {
+      console.warn("[sync] Could not editReply (interaction may have expired)");
+    }
     await ctx.channels.ops.send(`❌ Sync failed: ${msg}`);
   }
 }

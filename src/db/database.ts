@@ -67,6 +67,17 @@ export interface LearningRun {
   proposal_id: string | null;
 }
 
+export interface ServeJudgementRow {
+  evidence_id: string;
+  post_score: number;
+  bucket: string;
+  reason: string;
+  signals_json: string;
+  raw_json: string;
+  created_at: string;
+  expires_at: string;
+}
+
 // -- Interface --
 
 export interface MekikiDb {
@@ -98,6 +109,13 @@ export interface MekikiDb {
   insertLearningRun(): number;
   finishLearningRun(id: number, status: string, eventsProcessed: number, proposalId?: string): void;
   countNewEventsSince(since: string): number;
+  // serve judgement cache
+  getCachedJudgement(evidenceId: string): ServeJudgementRow | undefined;
+  upsertJudgement(evidenceId: string, postScore: number, bucket: string, reason: string, signalsJson: string, rawJson: string, ttlDays: number): void;
+  // serving queries
+  getCandidateEvidence(lookbackHours: number, maxCandidates: number): EvidenceRow[];
+  getRecentPostedBuckets(limit: number): Array<{ bucket: string; cnt: number }>;
+  getRecentPostedTitles(limit: number): string[];
   // utility
   close(): void;
 }
@@ -176,6 +194,18 @@ export function initDb(): MekikiDb {
       events_processed INTEGER NOT NULL DEFAULT 0,
       proposal_id      TEXT
     );
+
+    CREATE TABLE IF NOT EXISTS serve_judgement_cache (
+      evidence_id TEXT PRIMARY KEY,
+      post_score  REAL NOT NULL,
+      bucket      TEXT NOT NULL,
+      reason      TEXT NOT NULL,
+      signals_json TEXT NOT NULL DEFAULT '[]',
+      raw_json    TEXT NOT NULL,
+      created_at  TEXT NOT NULL DEFAULT (datetime('now')),
+      expires_at  TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_sjc_expires ON serve_judgement_cache(expires_at);
   `);
 
   const stmts = {
@@ -210,6 +240,42 @@ export function initDb(): MekikiDb {
     insertRun: db.prepare(`INSERT INTO learning_runs (status) VALUES ('running')`),
     finishRun: db.prepare(`UPDATE learning_runs SET finished_at = datetime('now'), status = ?, events_processed = ?, proposal_id = ? WHERE id = ?`),
     countNewEvents: db.prepare(`SELECT COUNT(*) as cnt FROM actions_log WHERE created_at > ? AND action IN ('label.keep', 'label.unsure', 'label.discard')`),
+    // serve judgement cache
+    getCachedJudgement: db.prepare(`SELECT * FROM serve_judgement_cache WHERE evidence_id = ? AND expires_at > datetime('now')`),
+    upsertJudgement: db.prepare(`
+      INSERT INTO serve_judgement_cache (evidence_id, post_score, bucket, reason, signals_json, raw_json, expires_at)
+      VALUES (?, ?, ?, ?, ?, ?, datetime('now', ? || ' days'))
+      ON CONFLICT(evidence_id) DO UPDATE SET
+        post_score = excluded.post_score, bucket = excluded.bucket, reason = excluded.reason,
+        signals_json = excluded.signals_json, raw_json = excluded.raw_json,
+        created_at = datetime('now'), expires_at = excluded.expires_at
+    `),
+    // serving queries
+    getCandidateEvidence: db.prepare(`
+      SELECT * FROM evidence
+      WHERE origin = 'BOT_RECOMMENDED'
+        AND state = 'NEW'
+        AND feed_message_id IS NULL
+        AND created_at > datetime('now', '-' || ? || ' hours')
+      ORDER BY created_at DESC
+      LIMIT ?
+    `),
+    getRecentPostedBuckets: db.prepare(`
+      SELECT sjc.bucket, COUNT(*) as cnt
+      FROM evidence e
+      JOIN serve_judgement_cache sjc ON e.evidence_id = sjc.evidence_id
+      WHERE e.feed_message_id IS NOT NULL
+        AND e.origin = 'BOT_RECOMMENDED'
+      GROUP BY sjc.bucket
+      ORDER BY cnt DESC
+      LIMIT ?
+    `),
+    getRecentPostedTitles: db.prepare(`
+      SELECT title FROM evidence
+      WHERE feed_message_id IS NOT NULL
+      ORDER BY updated_at DESC
+      LIMIT ?
+    `),
   };
 
   return {
@@ -260,6 +326,18 @@ export function initDb(): MekikiDb {
       const row = stmts.countNewEvents.get(since) as { cnt: number };
       return row.cnt;
     },
+    // serve judgement cache
+    getCachedJudgement: (evidenceId) => stmts.getCachedJudgement.get(evidenceId) as ServeJudgementRow | undefined,
+    upsertJudgement: (evidenceId, postScore, bucket, reason, signalsJson, rawJson, ttlDays) => {
+      stmts.upsertJudgement.run(evidenceId, postScore, bucket, reason, signalsJson, rawJson, String(ttlDays));
+    },
+    // serving queries
+    getCandidateEvidence: (lookbackHours, maxCandidates) =>
+      stmts.getCandidateEvidence.all(String(lookbackHours), maxCandidates) as EvidenceRow[],
+    getRecentPostedBuckets: (limit) =>
+      stmts.getRecentPostedBuckets.all(limit) as Array<{ bucket: string; cnt: number }>,
+    getRecentPostedTitles: (limit) =>
+      (stmts.getRecentPostedTitles.all(limit) as Array<{ title: string }>).map(r => r.title),
     close: () => db.close(),
   };
 }

@@ -1,0 +1,88 @@
+version: "0.1"
+enabled: true
+
+# 1回の巡回(/syncや定期巡回)で何件まで#feed-aiに出すか
+posting:
+  max_posts_per_cycle: 8
+  min_gap_minutes_between_posts: 0   # 0なら同バッチでまとめて投稿可
+  quiet_hours:
+    enabled: false
+    start: "00:00"
+    end: "07:00"
+
+candidates:
+  lookback_hours: 72
+  max_candidates: 200
+
+filters:
+  # “投稿済み/見た/捨てた”の再投稿を避ける
+  exclude_already_posted: true
+  exclude_already_seen: true
+  exclude_recently_discarded_days: 14
+
+  # 鮮度フィルタ
+  recency:
+    enabled: true
+    max_age_hours: 168  # 7日
+    prefer_recent: true
+
+  # ソース偏りを防ぐ
+  per_source_cap:
+    enabled: true
+    max_per_cycle: 3
+
+preselect:
+  # LLMに渡す前の粗選別(topK)
+  method: "heuristic"
+  top_k_for_llm: 20
+  # prelim_scoreの重み
+  scoring:
+    recency_weight: 0.35
+    signal_weight: 0.55
+    source_diversity_bonus: 0.10
+
+llm_judge:
+  enabled: true
+  task_name: "serve_judge"
+  timeout_ms: 25000
+  # 同一記事に再LLMしない（結果をDBにキャッシュ）
+  cache:
+    enabled: true
+    ttl_days: 30
+
+portfolio:
+  # “出すカテゴリ分布”のターゲット。合計=1.0推奨（多少ズレてもOK）
+  enabled: true
+  # bucket名はLLM出力の bucket と一致させる
+  target_share:
+    DEVTOOLS: 0.20
+    AI_LLM: 0.20
+    XR_VTUBER: 0.10
+    GAME_INDUSTRY: 0.15
+    ECON_POLICY: 0.10
+    GENERAL_NEWS: 0.10
+    SERENDIPITY: 0.15
+  # 足りないbucketを優先する強さ
+  deficit_boost: 0.35
+
+diversity:
+  # MMR: 類似記事の連投を避ける
+  enabled: true
+  method: "mmr"
+  lambda: 0.75            # 1.0に近いほど関連性優先、0に近いほど多様性優先
+  similarity:
+    method: "token_jaccard" # まずは軽い類似度でOK
+    fields: ["title", "summary", "signals"]
+
+exploration:
+  # explore枠: 意図的な寄り道
+  enabled: true
+  explore_share: 0.15     # 15%は探索枠（max_posts_per_cycleに対する割合）
+  strategy: "underrepresented_bucket_then_uncertain"
+  # 不確実性=post_scoreが中間のもの、または過去提示が少ないbucket
+  uncertain_score_range: [0.35, 0.65]
+
+logging:
+  # 選抜理由をopsへ出すか（デバッグ時だけON推奨）
+  explain_in_ops: true
+  explain_max_lines: 20
