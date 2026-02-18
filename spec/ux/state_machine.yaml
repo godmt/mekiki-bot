@@ -18,10 +18,7 @@ library_policy:
   on_keep: "upsert"      # create or update
   on_unsure: "upsert"
   on_discard:
-    mode: "mark_only"    # do not delete; just mark if exists
-    mark:
-      prefix_title: "[DISCARD]"
-      tag_key: "DISCARD"
+    mode: "delete"       # delete Library thread if exists (DB record retained)
 
 history:
   # Always append action history in DB. Library post may include a rendered summary.

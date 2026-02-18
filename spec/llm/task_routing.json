@@ -9,6 +9,10 @@
   },
   "library_writeup": {
     "provider": "anthropic",
-    "model": "claude-3-5-haiku-latest"
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "taste_profile_propose": { 
+    "provider": "openai", 
+    "model": "gpt-4o-mini" 
   }
 }

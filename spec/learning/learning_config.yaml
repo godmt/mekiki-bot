@@ -16,3 +16,6 @@ scoring:
   keep_weight: 1.0
   unsure_weight: 0.2
   discard_weight: -1.0
+  # Manual input (inbox-manual/DM/ingest) is a stronger signal than RSS auto-feed.
+  # All scores from manual-origin evidence are multiplied by this factor.
+  manual_boost: 1.5

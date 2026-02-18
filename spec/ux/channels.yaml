@@ -5,6 +5,7 @@ channels:
   inbox_manual:
     name: "inbox-manual"
     id: "1473429733378097244"
+    auto_label: "keep"     # 投入時に自動でKeep → Library投稿も即実行
   feed_ai:
     name: "feed-ai"
     id: "1473428774816186409"

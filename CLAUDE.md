@@ -24,6 +24,14 @@ G) Keep/Unsure -> #library Forum upsert + tags
 H) LLMClient（AI SDK）と tasks（summarize / extract_signals / library_writeup）を作り、task_routing.json を参照してモデル選択
 I) learning v0（rule-based: time decay + fatigue）を実装し、ActionEventを受けてスコア更新できる形にする（まずはログ/スコア計算でOK）
 
+Logging policy (project-local)：
+- 実行ログはプロジェクト外の一時領域（例: `~/AppData/Local/Temp/claude/**`）に出さない。
+- バックグラウンド実行するコマンドは必ず `./logs/` にログを出す。
+  - stdout/stderr（標準出力/標準エラー: 実行ログの出力先; なぜ: どこに吐くかを固定するため）は `./logs/*.output` へリダイレクトする。
+  - 例:
+    - `mkdir -p logs`
+    - `cd /d/Program/mekiki-bot && nohup npx tsx src/index.ts > ./logs/bot.output 2>&1 & disown`
+
 重要:
 - Discord API制約などで spec が足りず詰まったら、最小の spec/ 変更案を作って私に承認を求めてください（承認なく変更しない）。
 - 破壊的操作（git reset --hard など）はしない。

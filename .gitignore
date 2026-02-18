@@ -1,1 +1,12 @@
 .env
+node_modules/
+dist/
+data/
+logs/
+*.db
+*.db-journal
+*.db-wal
+*.tsbuildinfo
+
+# Claude Code (project-local)
+.claude/settings.local.json

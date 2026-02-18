@@ -42,6 +42,14 @@ modals:
         label: "メモ（必須）"
         required: true
         max_length: 800
+  profile_edit:
+    custom_id: "mk:profile_edit_modal:{proposal_id}"
+    title: "Taste Profile 手動編集"
+    fields:
+      - key: profile_md
+        label: "Taste Profile (Markdown)"
+        required: true
+        max_length: 4000
 
 reason_menu:
   # Keep後にたまにだけ表示する（疲れないため）
@@ -73,3 +81,21 @@ duel:
     BOTH: "mk:duel:both:{duel_id}"
     NEITHER: "mk:duel:neither:{duel_id}"
     SKIP: "mk:duel:skip:{duel_id}"
+
+profile_proposal:
+  buttons:
+    - key: APPROVE_PROFILE
+      label: "Approve"
+      emoji: "✅"
+      action: "profile.approve"
+      custom_id: "mk:profile:approve:{proposal_id}"
+    - key: REJECT_PROFILE
+      label: "Reject"
+      emoji: "🗑"
+      action: "profile.reject"
+      custom_id: "mk:profile:reject:{proposal_id}"
+    - key: EDIT_PROFILE
+      label: "Edit"
+      emoji: "📝"
+      action: "profile.edit_modal"
+      custom_id: "mk:profile:edit:{proposal_id}"

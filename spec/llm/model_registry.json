@@ -1,59 +1,44 @@
 {
   "providers": {
     "openai": {
-      "label": "ChatGPT (OpenAI)",
+      "label": "OpenAI",
       "models": [
-        {
-          "id": "gpt-4o-mini",
-          "label": "gpt-4o-mini"
-        },
-        {
-          "id": "gpt-4o",
-          "label": "gpt-4o"
-        },
-        {
-          "id": "o4-mini",
-          "label": "o4-mini"
-        }
+        { "id": "gpt-4.1-mini", "label": "GPT-4.1 mini" },
+        { "id": "gpt-4.1", "label": "GPT-4.1" },
+        { "id": "gpt-4o-mini", "label": "GPT-4o mini" },
+        { "id": "o4-mini", "label": "o4-mini" }
       ]
     },
     "anthropic": {
-      "label": "Claude (Anthropic)",
+      "label": "Anthropic",
       "models": [
-        {
-          "id": "claude-3-5-haiku-latest",
-          "label": "claude-3.5 haiku (latest)"
-        },
-        {
-          "id": "claude-3-5-sonnet-latest",
-          "label": "claude-3.5 sonnet (latest)"
-        }
+        { "id": "claude-haiku-4-5-20251001", "label": "Claude Haiku 4.5" },
+        { "id": "claude-sonnet-4-5-20250929", "label": "Claude Sonnet 4.5" },
+        { "id": "claude-sonnet-4-6", "label": "Claude Sonnet 4.6" },
+        { "id": "claude-opus-4-6", "label": "Claude Opus 4.6" }
       ]
     },
     "google": {
-      "label": "Gemini (Google)",
+      "label": "Google Gemini",
       "models": [
-        {
-          "id": "gemini-2.5-flash",
-          "label": "gemini-2.5-flash"
-        },
-        {
-          "id": "gemini-2.5-pro",
-          "label": "gemini-2.5-pro"
-        }
+        { "id": "gemini-2.5-flash-lite", "label": "Gemini 2.5 Flash Lite" },
+        { "id": "gemini-2.5-flash", "label": "Gemini 2.5 Flash" },
+        { "id": "gemini-2.5-pro", "label": "Gemini 2.5 Pro" },
+        { "id": "gemini-3-flash-preview", "label": "Gemini 3 Flash (preview)" }
       ]
     },
     "ollama": {
       "label": "Ollama (Local)",
       "models": [
-        {
-          "id": "qwen3:14b-q4_K_M",
-          "label": "qwen3:14b-q4_K_M"
-        },
-        {
-          "id": "llama3.1:8b",
-          "label": "llama3.1:8b"
-        }
+        { "id": "qwen3:8b", "label": "Qwen3 8B" },
+        { "id": "qwen3:14b", "label": "Qwen3 14B" },
+        { "id": "gemma3n:e4b", "label": "Gemma3n E4B" },
+        { "id": "gemma3:27b", "label": "Gemma3 27B" },
+        { "id": "qwen3:30b-a3b-instruct-2507-q4_K_M", "label": "Qwen3 30B-A3B Instruct" },
+        { "id": "qwen3:30b-a3b-thinking-2507-q4_K_M", "label": "Qwen3 30B-A3B Thinking" },
+        { "id": "qwen3-coder-next:latest", "label": "Qwen3 Coder Next" },
+        { "id": "qwen3-coder-next-64k:latest", "label": "Qwen3 Coder Next 64K" },
+        { "id": "gpt-oss:120b", "label": "GPT-OSS 120B" }
       ]
     }
   }

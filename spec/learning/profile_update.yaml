@@ -1,0 +1,44 @@
+enabled: true
+
+scheduler:
+  # 学習はボタン押下では走らせない。定期 or コマンドのみ。
+  mode: ["interval", "command"]
+  interval_minutes: 360            # 6h
+  min_new_events_to_run: 20        # これ未満ならスキップ
+  lock_ttl_minutes: 30             # 二重起動防止
+
+sampling:
+  # どのイベントを学習に使うか
+  lookback_days: 60
+  max_events: 300
+  origins:
+    USER_SEEDED:
+      enabled: true
+      weight: 2.0                  # inbox由来は“濃い”前提で重め
+    BOT_RECOMMENDED:
+      enabled: true
+      weight: 1.0
+  labels:
+    KEEP:   { weight: 1.0 }
+    UNSURE: { weight: 0.2 }
+    DISCARD:{ weight: -1.0 }
+
+proposal:
+  require_approval: true
+  post_channel_key: "ops"          # spec/ux/channels.yaml の ops
+  expire_hours: 72
+  max_proposals_per_day: 4
+  max_profile_chars: 12000         # コンテキスト節約
+  change_limits:
+    max_added_bullets: 6
+    max_removed_bullets: 3
+    max_modified_bullets: 6
+
+rendering:
+  # ops投稿に載せる量（Discordで読みやすく）
+  show_diff_summary_lines: 12
+  show_profile_preview_chars: 1800
+
+llm_task:
+  task_name: "taste_profile_propose"
+  # task_routing.json でモデル選択。ここはタスク名だけを固定。
